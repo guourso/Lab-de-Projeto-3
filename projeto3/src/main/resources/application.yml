@@ -1,0 +1,46 @@
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/projeto3db
+        username: postgres
+        password: postgres
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+    mail:
+        host: ${SPRING_MAIL_HOST}
+        port: ${SPRING_MAIL_PORT}
+        username: ${SPRING_MAIL_USERNAME}
+        password: ${SPRING_MAIL_PASSWORD}
+        properties:
+            mail:
+                smtp:
+                auth: ${MAIL_AUTH}
+                starttls:
+                    enable: ${MAIL_STARTTLS}
+                ssl:
+                    enable: ${MAIL_SSL}
+                debug: ${MAIL_DEBUG}
+    task:
+        execution:
+            pool:
+                core-size: 2
+                max-size: 4
+                queue-capacity: 50
+            thread-name-prefix: async-email-
+            scheduling:
+                pool:
+                    size: 2
+                    thread-name-prefix: scheduled-task-
+server:
+    port: 8080
+
+logging:
+    level:
+        org.springframework: INFO
+        com.projeto3: DEBUG
