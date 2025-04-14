@@ -16,8 +16,8 @@
             "request": "launch",
             "mainClass": "com.lab.projeto3.Projeto3Application",
             "projectName": "projeto3",
-            "cwd": "${workspaceFolder}/projeto3",
-            "envFile": "${workspaceFolder}/projeto3/.env"
+            "cwd": "${workspaceFolder}/",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
