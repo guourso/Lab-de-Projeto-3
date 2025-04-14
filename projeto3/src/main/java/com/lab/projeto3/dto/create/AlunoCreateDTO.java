@@ -1,5 +1,7 @@
 package com.lab.projeto3.dto.create;
+import lombok.Data;
 
+@Data
 public class AlunoCreateDTO {
     private String nome;
     private String email;

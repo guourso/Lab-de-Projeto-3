@@ -1,7 +1,9 @@
 package com.lab.projeto3.dto;
 
 import java.time.LocalDateTime;
+import lombok.Data;
 
+@Data
 public class TransacaoMoedaDTO {
     private Long id;
     private LocalDateTime dataHora;
