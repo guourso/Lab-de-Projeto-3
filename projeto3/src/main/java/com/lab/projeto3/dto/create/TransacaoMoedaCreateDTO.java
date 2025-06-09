@@ -5,16 +5,17 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class VantagemCreateDTO {
+public class TransacaoMoedaCreateDTO {
+
+    @NotNull
+    private Long idProfessor;
+
+    @NotNull
+    private Long idAluno;
+
+    @NotNull
+    private Integer quantidade;
 
     @NotBlank
-    private String descricao;
-
-    @NotNull
-    private Integer custoMoedas;
-
-    private String urlImagem;
-
-    @NotNull
-    private Long idEmpresa;
+    private String motivo;
 }
