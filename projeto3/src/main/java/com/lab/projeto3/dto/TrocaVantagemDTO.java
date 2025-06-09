@@ -5,11 +5,10 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class TransacaoMoedaDTO {
+public class TrocaVantagemDTO {
     private Long id;
-    private String professorNome;
     private String alunoNome;
-    private int quantidade;
-    private String motivo;
+    private String vantagemDescricao;
+    private String codigoCupom;
     private LocalDateTime data;
 }
