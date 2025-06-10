@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class AlunoCreateDTO {
+public class AlunoCreateDTO extends UsuarioCreateDTO {
 
     @NotBlank
     private String nome;

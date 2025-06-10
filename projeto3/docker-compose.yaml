@@ -8,6 +8,26 @@ services:
     networks:
       - sysvantagens-network
 
+  sistema-moedas:
+    build: .
+    container_name: 'sistema_moedas'
+    restart: always
+    ports:
+      - "${SPRING_PORT}:8080"
+    env_file:
+      - ./.env
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${SPRING_DATASOURCE_DBNAME}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_MAIL_HOST=mailhog
+      - SPRING_MAIL_PORT=${SPRING_MAIL_PORT}
+    depends_on:
+      - db
+      - mailhog
+    networks:
+      - sysvantagens-network
+
   db:
     image: postgres:13
     container_name: sysvantagens_db

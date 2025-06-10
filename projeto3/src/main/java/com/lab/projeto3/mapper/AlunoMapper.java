@@ -1,10 +1,8 @@
 package com.lab.projeto3.mapper;
 
 import com.lab.projeto3.dto.AlunoDTO;
-import com.lab.projeto3.dto.InstituicaoDTO;
 import com.lab.projeto3.dto.create.AlunoCreateDTO;
 import com.lab.projeto3.model.Aluno;
-import com.lab.projeto3.model.Instituicao;
 
 public class AlunoMapper {
 
@@ -14,32 +12,22 @@ public class AlunoMapper {
         dto.setNome(aluno.getNome());
         dto.setEmail(aluno.getEmail());
         dto.setCurso(aluno.getCurso());
+        dto.setCpf(aluno.getCpf());
+        dto.setRg(aluno.getRg());
+        dto.setEndereco(aluno.getEndereco());
         dto.setSaldoMoedas(aluno.getSaldoMoedas());
-        dto.setInstituicaoNome(aluno.getInstituicao() != null ? aluno.getInstituicao().getNome() : null);
+        dto.setInstituicaoNome(aluno.getInstituicao().getNome());
         return dto;
     }
-
-    public static Aluno toEntity(AlunoCreateDTO dto ) {
+    public static Aluno toEntity(AlunoCreateDTO alunoCreateDTO) {
         Aluno aluno = new Aluno();
-        aluno.setNome(dto.getNome());
-        aluno.setEmail(dto.getEmail());
-        aluno.setSenha(dto.getSenha());
-        aluno.setCpf(dto.getCpf());
-        aluno.setRg(dto.getRg());
-        aluno.setEndereco(dto.getEndereco());
-        aluno.setCurso(dto.getCurso());
+        aluno.setNome(alunoCreateDTO.getNome());
+        aluno.setEmail(alunoCreateDTO.getEmail());
+        aluno.setCurso(alunoCreateDTO.getCurso());
+        aluno.setCpf(alunoCreateDTO.getCpf());
+        aluno.setRg(alunoCreateDTO.getRg());
+        aluno.setEndereco(alunoCreateDTO.getEndereco());
         return aluno;
     }
-
-    public static Aluno toEntity(AlunoDTO dto, InstituicaoDTO instituicao) {
-        Aluno aluno = new Aluno();
-        aluno.setNome(dto.getNome());
-        aluno.setEmail(dto.getEmail());
-        aluno.setCurso(dto.getCurso());
-        aluno.setSaldoMoedas(dto.getSaldoMoedas());
-        aluno.setInstituicao(new Instituicao());
-        aluno.getInstituicao().setNome(instituicao.getNome());
-        aluno.getInstituicao().setId(instituicao.getId());
-        return aluno;
-    }
+    
 }

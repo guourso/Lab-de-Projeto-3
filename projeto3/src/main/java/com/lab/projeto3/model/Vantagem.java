@@ -1,10 +1,6 @@
 package com.lab.projeto3.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -15,10 +11,14 @@ public class Vantagem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String descricao;
-    private String fotoUrl;
-    private int custo;
 
-    @ManyToOne
+    @Column(nullable = false)
+    private int custoMoedas;
+
+    private String urlImagem;
+
+    @ManyToOne(optional = false)
     private EmpresaParceira empresa;
 }

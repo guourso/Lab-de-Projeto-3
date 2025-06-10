@@ -3,6 +3,7 @@ package com.lab.projeto3.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,16 +22,26 @@ public class Aluno extends Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String cpf;
+
+    @Column(nullable = false, unique = true)
     private String rg;
+
+    @Column(nullable = false)
     private String endereco;
+
+    @Column(nullable = false)
     private String curso;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Instituicao instituicao;
 
     private int saldoMoedas = 0;
 
     @OneToMany(mappedBy = "aluno")
-    private List<TransacaoMoeda> transacoes = new ArrayList<>();
+    private List<TransacaoMoeda> transacoesRecebidas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "aluno")
+    private List<TrocaVantagem> trocas = new ArrayList<>();
 }

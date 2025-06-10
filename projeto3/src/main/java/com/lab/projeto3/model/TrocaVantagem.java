@@ -7,23 +7,20 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-public class TransacaoMoeda {
+public class TrocaVantagem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)
-    private Professor professor;
-
-    @ManyToOne(optional = false)
     private Aluno aluno;
 
-    @Column(nullable = false)
-    private int quantidade;
+    @ManyToOne(optional = false)
+    private Vantagem vantagem;
 
     @Column(nullable = false)
-    private String motivo;
+    private String codigoCupom;
 
     @Column(nullable = false)
     private LocalDateTime data = LocalDateTime.now();

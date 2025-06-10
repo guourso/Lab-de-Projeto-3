@@ -2,7 +2,6 @@ package com.lab.projeto3.mapper;
 
 import com.lab.projeto3.dto.VantagemDTO;
 import com.lab.projeto3.dto.create.VantagemCreateDTO;
-import com.lab.projeto3.model.EmpresaParceira;
 import com.lab.projeto3.model.Vantagem;
 
 public class VantagemMapper {
@@ -11,18 +10,26 @@ public class VantagemMapper {
         VantagemDTO dto = new VantagemDTO();
         dto.setId(vantagem.getId());
         dto.setDescricao(vantagem.getDescricao());
-        dto.setFotoUrl(vantagem.getFotoUrl());
-        dto.setCusto(vantagem.getCusto());
-        dto.setEmpresaNome(vantagem.getEmpresa() != null ? vantagem.getEmpresa().getNome() : null);
+        dto.setCustoMoedas(vantagem.getCustoMoedas());
+        dto.setUrlImagem(vantagem.getUrlImagem());
+        dto.setEmpresaNome(vantagem.getEmpresa().getNome());
         return dto;
     }
 
-    public static Vantagem toEntity(VantagemCreateDTO dto, EmpresaParceira empresa) {
+    public static Vantagem toEntity(VantagemCreateDTO dto) {
         Vantagem vantagem = new Vantagem();
         vantagem.setDescricao(dto.getDescricao());
-        vantagem.setFotoUrl(dto.getFotoUrl());
-        vantagem.setCusto(dto.getCusto());
-        vantagem.setEmpresa(empresa);
+        vantagem.setCustoMoedas(dto.getCustoMoedas());
+        vantagem.setUrlImagem(dto.getUrlImagem());
+        return vantagem;
+    }
+
+    public static Vantagem toEntity(VantagemDTO dto) {
+        Vantagem vantagem = new Vantagem();
+        vantagem.setId(dto.getId());
+        vantagem.setDescricao(dto.getDescricao());
+        vantagem.setCustoMoedas(dto.getCustoMoedas());
+        vantagem.setUrlImagem(dto.getUrlImagem());
         return vantagem;
     }
 }
