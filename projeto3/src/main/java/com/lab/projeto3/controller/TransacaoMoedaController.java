@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lab.projeto3.dto.TransacaoMoedaDTO;
 import com.lab.projeto3.dto.create.TransacaoMoedaCreateDTO;
+import com.lab.projeto3.mapper.AlunoMapper;
 import com.lab.projeto3.mapper.TransacaoMapper;
 import com.lab.projeto3.model.Aluno;
 import com.lab.projeto3.model.Professor;
@@ -36,7 +37,7 @@ public class TransacaoMoedaController {
     @PostMapping
     public ResponseEntity<TransacaoMoedaDTO> registrar(@RequestBody @Valid TransacaoMoedaCreateDTO dto) {
         Professor professor = professorService.buscarPorId(dto.getIdProfessor());
-        Aluno aluno = alunoService.buscarPorId(dto.getIdAluno());
+        Aluno aluno = AlunoMapper.toEntity(alunoService.buscarPorId(dto.getIdAluno()));
 
         if (professor.getSaldoMoedas() < dto.getQuantidade()) {
             throw new IllegalArgumentException("Professor não possui saldo suficiente.");

@@ -19,6 +19,18 @@ public class AlunoMapper {
         dto.setInstituicaoNome(aluno.getInstituicao().getNome());
         return dto;
     }
+    public static Aluno toEntity(AlunoDTO alunoDTO) {
+        Aluno aluno = new Aluno();
+        aluno.setId(alunoDTO.getId());
+        aluno.setNome(alunoDTO.getNome());
+        aluno.setEmail(alunoDTO.getEmail());
+        aluno.setCurso(alunoDTO.getCurso());
+        aluno.setCpf(alunoDTO.getCpf());
+        aluno.setRg(alunoDTO.getRg());
+        aluno.setEndereco(alunoDTO.getEndereco());
+        aluno.setSaldoMoedas(alunoDTO.getSaldoMoedas());
+        return aluno;
+    }
     public static Aluno toEntity(AlunoCreateDTO alunoCreateDTO) {
         Aluno aluno = new Aluno();
         aluno.setNome(alunoCreateDTO.getNome());

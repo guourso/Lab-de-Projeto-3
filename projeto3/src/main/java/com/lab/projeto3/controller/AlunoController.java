@@ -29,17 +29,17 @@ public class AlunoController {
 
     @PostMapping
     public ResponseEntity<AlunoDTO> criar(@RequestBody @Valid AlunoCreateDTO dto) {
-        Aluno aluno = alunoService.criar(AlunoMapper.toEntity(dto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(AlunoMapper.toDTO(aluno));
+        AlunoDTO alunoDTO = alunoService.criar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(alunoDTO);
     }
 
     @GetMapping
     public List<AlunoDTO> listar() {
-        return alunoService.listarTodos().stream().map(AlunoMapper::toDTO).toList();
+        return alunoService.listarTodos();
     }
 
     @GetMapping("/{id}")
     public AlunoDTO buscarPorId(@PathVariable Long id) {
-        return AlunoMapper.toDTO(alunoService.buscarPorId(id));
+        return alunoService.buscarPorId(id);
     }
 }

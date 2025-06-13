@@ -4,8 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.lab.projeto3.dto.LoginRequestDTO;
 import com.lab.projeto3.dto.LoginResponseDTO;
-import com.lab.projeto3.dto.create.UsuarioCreateDTO;
-import com.lab.projeto3.enums.Role;
 import com.lab.projeto3.model.*;
 import com.lab.projeto3.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,9 +22,7 @@ public class AuthService {
     @Value("${jwt.secret}")
     private String secret;
 
-    private final AlunoRepository alunoRepo;
-    private final ProfessorRepository professorRepo;
-    private final EmpresaParceiraRepository empresaRepo;
+    private final UsuarioRepository usuarioRepo;
     private final PasswordEncoder passwordEncoder;
 
     public LoginResponseDTO autenticar(LoginRequestDTO dto) {
@@ -44,13 +40,7 @@ public class AuthService {
     }
 
     private Optional<Usuario> buscarUsuarioPorEmail(String email) {
-        Optional<Usuario> usuario = alunoRepo.findByEmail(email).map(a -> (Usuario) a);
-        if (usuario.isEmpty()) {
-            usuario = professorRepo.findByEmail(email).map(p -> (Usuario) p);
-        }
-        if (usuario.isEmpty()) {
-            usuario = empresaRepo.findByEmail(email).map(e -> (Usuario) e);
-        }
+        Optional<Usuario> usuario = usuarioRepo.findByEmail(email);
         return usuario;
     }
 
@@ -63,20 +53,4 @@ public class AuthService {
                 .sign(Algorithm.HMAC256(secret));
     }
 
-    public Usuario cadastrarUsuario(UsuarioCreateDTO usuarioCreate) {
-        usuarioCreate.setSenha(passwordEncoder.encode(usuarioCreate.getSenha()));
-        Role role = usuarioCreate.getRole();
-        if (role == Role.ALUNO) {
-            Aluno aluno = new Aluno(usuarioCreate);
-            return alunoRepo.save(aluno);
-        } else if (role == Role.PROFESSOR) {
-            Professor professor = new Professor(usuarioCreate);
-            return professorRepo.save(professor);
-        } else if (role == Role.EMPRESA_PARCEIRA) {
-            EmpresaParceira empresa = new EmpresaParceira(usuarioCreate);
-            return empresaRepo.save(empresa);
-        }
-        
-        throw new IllegalArgumentException("Tipo de usuário inválido");
-    }
 }

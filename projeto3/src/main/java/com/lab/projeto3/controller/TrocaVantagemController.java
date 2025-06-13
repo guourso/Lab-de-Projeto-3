@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lab.projeto3.dto.TrocaVantagemDTO;
 import com.lab.projeto3.dto.create.TrocaVantagemCreateDTO;
+import com.lab.projeto3.mapper.AlunoMapper;
 import com.lab.projeto3.mapper.TrocaMapper;
 import com.lab.projeto3.model.Aluno;
 import com.lab.projeto3.model.TrocaVantagem;
@@ -36,7 +37,7 @@ public class TrocaVantagemController {
 
     @PostMapping
     public ResponseEntity<TrocaVantagemDTO> trocar(@RequestBody @Valid TrocaVantagemCreateDTO dto) {
-        Aluno aluno = alunoService.buscarPorId(dto.getIdAluno());
+        Aluno aluno = AlunoMapper.toEntity(alunoService.buscarPorId(dto.getIdAluno()));
         Vantagem vantagem = vantagemService.buscarPorId(dto.getIdVantagem());
 
         if (aluno.getSaldoMoedas() < vantagem.getCustoMoedas()) {
