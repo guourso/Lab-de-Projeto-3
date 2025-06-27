@@ -43,7 +43,7 @@ const navByRole = {
       url: "#",
       items: [
         { title: "Dashboard", url: "/empresa/dashboard" },
-        { title: "Recompensas", url: "/empresa/recompensas" },
+        { title: "Recompensas", url: "/empresa/vantagens" },
       ],
     },
   ],
