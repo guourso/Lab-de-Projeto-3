@@ -39,6 +39,7 @@ public class AlunoMapper {
         aluno.setCpf(alunoCreateDTO.getCpf());
         aluno.setRg(alunoCreateDTO.getRg());
         aluno.setEndereco(alunoCreateDTO.getEndereco());
+        aluno.setSenha(alunoCreateDTO.getSenha());
         return aluno;
     }
     

@@ -1,21 +1,14 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { AppSidebar } from "@/components/app-sidebar"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+import * as React from "react";
+import { useRouter } from "next/navigation";
+import { AppSidebar } from "@/components/app-sidebar";
+import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 import {
   Card,
   CardContent,
@@ -23,47 +16,59 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-
-// Tipo para vantagem
-type Vantagem = {
-  id: string
-  titulo: string
-  descricao: string
-  imagemUrl: string
-}
-
-// Mock de vantagens
-const vantagens: Vantagem[] = [
-  {
-    id: "1",
-    titulo: "Desconto na Livraria",
-    descricao: "10% de desconto em todos os livros da livraria parceira.",
-    imagemUrl: "https://offloadmedia.feverup.com/belohorizontesecreto.com/wp-content/uploads/2023/07/07100858/quixote-1024x768.jpg",
-  },
-  {
-    id: "2",
-    titulo: "Café Grátis",
-    descricao: "Ganhe um café expresso no Café da Esquina.",
-    imagemUrl: "/img/cafe.png",
-  },
-  {
-    id: "3",
-    titulo: "Ingresso para Cinema",
-    descricao: "1 ingresso para qualquer sessão no CinePUC.",
-    imagemUrl: "/img/cinema.png",
-  },
-]
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { useVantagens, type Vantagem } from "@/hooks/use-vantagens";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Page() {
-  const [resgatada, setResgatada] = React.useState<Vantagem | null>(null)
+  const router = useRouter();
+  const { user } = useAuth();
+  const { listarVantagens, resgatarVantagem } = useVantagens();
+  const [vantagens, setVantagens] = React.useState<Vantagem[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
-  const handleResgatar = (vantagem: Vantagem) => {
-    setResgatada(vantagem)
-    // Aqui pode chamar API para efetuar a transação
-    console.log("Resgatando:", vantagem)
+  React.useEffect(() => {
+    if (!user || user.role !== "ALUNO") {
+      router.push("/login");
+      return;
+    }
+
+    const fetchVantagens = async () => {
+      try {
+        const data = await listarVantagens();
+        setVantagens(data);
+      } catch (err) {
+        setError("Erro ao carregar vantagens");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVantagens();
+  }, [listarVantagens, user, router]);
+
+  const handleResgatar = async (vantagem: Vantagem) => {
+    if (!user) return;
+
+    try {
+      await resgatarVantagem(vantagem.id, user.id);
+      // Atualizar a lista de vantagens após o resgate
+      const updatedVantagens = await listarVantagens();
+      setVantagens(updatedVantagens);
+    } catch (err) {
+      setError("Erro ao resgatar vantagem");
+    }
+  };
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
+  if (error) {
+    return <div>Erro: {error}</div>;
   }
 
   return (
@@ -76,6 +81,7 @@ export default function Page() {
             orientation="vertical"
             className="mr-2 data-[orientation=vertical]:h-4"
           />
+          <div className="ml-auto">Saldo: {user?.saldoMoedas} moedas</div>
         </header>
 
         <div className="flex flex-1 flex-col gap-4 p-4">
@@ -87,6 +93,9 @@ export default function Page() {
                 <CardHeader>
                   <CardTitle>{vantagem.titulo}</CardTitle>
                   <CardDescription>{vantagem.descricao}</CardDescription>
+                  <CardDescription className="font-semibold text-primary">
+                    Valor: {vantagem.valor} moedas
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <img
@@ -98,13 +107,23 @@ export default function Page() {
                 <CardFooter>
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button variant="default">Resgatar</Button>
+                      <Button
+                        variant="default"
+                        disabled={
+                          user?.saldoMoedas
+                            ? user.saldoMoedas < vantagem.valor
+                            : true
+                        }
+                      >
+                        Resgatar
+                      </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <p className="text-lg font-semibold">
                         Deseja resgatar a vantagem:
                       </p>
                       <p className="mb-2">{vantagem.titulo}</p>
+                      <p className="mb-4">Valor: {vantagem.valor} moedas</p>
                       <Button
                         onClick={() => handleResgatar(vantagem)}
                         className="w-full"
@@ -120,5 +139,5 @@ export default function Page() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

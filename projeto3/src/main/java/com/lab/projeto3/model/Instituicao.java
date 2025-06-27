@@ -10,6 +10,8 @@ import lombok.Setter;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -26,6 +28,7 @@ public class Instituicao {
     private String nome;
 
     @OneToMany(mappedBy = "instituicao")
+    @JsonManagedReference
     private List<Aluno> alunos;
 
     @OneToMany(mappedBy = "instituicao")

@@ -2,14 +2,15 @@ package com.lab.projeto3.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,14 +38,18 @@ public class Aluno extends Usuario {
     @Column(nullable = false)
     private String curso;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Instituicao instituicao;
 
-    private Double saldoMoedas =  0.0;
+    @Builder.Default
+    private Double saldoMoedas = 0.0;
 
     @OneToMany(mappedBy = "aluno")
+    @Builder.Default
     private List<TransacaoMoeda> transacoesRecebidas = new ArrayList<>();
 
     @OneToMany(mappedBy = "aluno")
+    @Builder.Default
     private List<TrocaVantagem> trocas = new ArrayList<>();
 }

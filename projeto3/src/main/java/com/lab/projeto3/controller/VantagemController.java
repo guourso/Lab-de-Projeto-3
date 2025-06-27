@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lab.projeto3.dto.ResgatarVantagemDTO;
 import com.lab.projeto3.dto.VantagemDTO;
 import com.lab.projeto3.dto.create.VantagemCreateDTO;
 import com.lab.projeto3.mapper.VantagemMapper;
@@ -41,5 +42,11 @@ public class VantagemController {
     @GetMapping("/empresa/{idEmpresa}")
     public List<VantagemDTO> listarPorEmpresa(@PathVariable Long idEmpresa) {
         return vantagemService.listarPorEmpresa(idEmpresa).stream().map(VantagemMapper::toDTO).toList();
+    }
+
+    @PostMapping("/{id}/resgatar")
+    public ResponseEntity<VantagemDTO> resgatar(@PathVariable Long id, @RequestBody @Valid ResgatarVantagemDTO dto) {
+        Vantagem vantagem = vantagemService.resgatarVantagem(id, dto.getAlunoId());
+        return ResponseEntity.ok(VantagemMapper.toDTO(vantagem));
     }
 }

@@ -17,10 +17,12 @@ import java.util.List;
 public class AlunoService {
 
     private final AlunoRepository alunoRepository;
+    private final InstituicaoService instituicaoService;
 
     public AlunoDTO criar(AlunoCreateDTO alunoCreateDto) {
         Aluno aluno = AlunoMapper.toEntity(alunoCreateDto);
         aluno.setRole(Role.ALUNO);
+        aluno.setInstituicao(instituicaoService.buscarPorId(alunoCreateDto.getIdInstituicao()));
         aluno = alunoRepository.save(aluno);
         return AlunoMapper.toDTO(aluno);
     }
@@ -35,4 +37,5 @@ public class AlunoService {
         return AlunoMapper.toDTO(alunoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado")));
     }
+
 }
