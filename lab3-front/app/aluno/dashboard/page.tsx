@@ -27,13 +27,21 @@ import {
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 
+// Tipo para vantagem
+type Vantagem = {
+  id: string
+  titulo: string
+  descricao: string
+  imagemUrl: string
+}
+
 // Mock de vantagens
 const vantagens: Vantagem[] = [
   {
     id: "1",
     titulo: "Desconto na Livraria",
     descricao: "10% de desconto em todos os livros da livraria parceira.",
-    imagemUrl: "/img/livraria.png",
+    imagemUrl: "https://offloadmedia.feverup.com/belohorizontesecreto.com/wp-content/uploads/2023/07/07100858/quixote-1024x768.jpg",
   },
   {
     id: "2",
@@ -60,7 +68,7 @@ export default function Page() {
 
   return (
     <SidebarProvider>
-      <AppSidebar role="ALUNO" />
+      <AppSidebar role="PROFESSOR" />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
