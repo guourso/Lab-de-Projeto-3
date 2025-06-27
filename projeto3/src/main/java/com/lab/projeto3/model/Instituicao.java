@@ -1,12 +1,21 @@
 package com.lab.projeto3.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Getter
+@Setter
+@Builder
 public class Instituicao {
 
     @Id

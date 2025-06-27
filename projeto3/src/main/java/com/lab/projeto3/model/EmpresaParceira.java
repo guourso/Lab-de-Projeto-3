@@ -7,15 +7,23 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@PrimaryKeyJoinColumn(name = "usuario_id")
+@Getter
+@Setter
+@ToString(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 public class EmpresaParceira extends Usuario {
-
 
     @Column(nullable = false, unique = true)
     private String cnpj;

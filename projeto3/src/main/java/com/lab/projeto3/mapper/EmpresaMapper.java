@@ -20,6 +20,7 @@ public class EmpresaMapper {
         EmpresaParceira empresa = new EmpresaParceira();
         empresa.setNome(createDTO.getNome());
         empresa.setEmail(createDTO.getEmail());
+        empresa.setSenha(createDTO.getSenha());
         empresa.setDescricao(createDTO.getDescricao());
         empresa.setCnpj(createDTO.getCnpj());
         return empresa;

@@ -6,15 +6,16 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class AlunoCreateDTO extends UsuarioCreateDTO {
+public class AlunoCreateDTO {
 
-    @NotBlank
+    @NotBlank(message = "O nome é obrigatório")
     private String nome;
 
-    @NotBlank @Email
+    @NotBlank(message = "O email é obrigatório")
+    @Email(message = "Email inválido")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "A senha é obrigatória")
     private String senha;
 
     @NotBlank

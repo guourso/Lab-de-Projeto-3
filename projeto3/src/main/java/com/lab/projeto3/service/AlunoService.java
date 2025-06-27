@@ -2,6 +2,7 @@ package com.lab.projeto3.service;
 
 import com.lab.projeto3.dto.AlunoDTO;
 import com.lab.projeto3.dto.create.AlunoCreateDTO;
+import com.lab.projeto3.enums.Role;
 import com.lab.projeto3.mapper.AlunoMapper;
 import com.lab.projeto3.model.Aluno;
 import com.lab.projeto3.repository.AlunoRepository;
@@ -18,7 +19,9 @@ public class AlunoService {
     private final AlunoRepository alunoRepository;
 
     public AlunoDTO criar(AlunoCreateDTO alunoCreateDto) {
-        Aluno aluno = alunoRepository.save(AlunoMapper.toEntity(alunoCreateDto));
+        Aluno aluno = AlunoMapper.toEntity(alunoCreateDto);
+        aluno.setRole(Role.ALUNO);
+        aluno = alunoRepository.save(aluno);
         return AlunoMapper.toDTO(aluno);
     }
 

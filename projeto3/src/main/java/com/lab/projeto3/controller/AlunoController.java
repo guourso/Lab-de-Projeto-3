@@ -27,7 +27,7 @@ public class AlunoController {
 
     private final AlunoService alunoService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<AlunoDTO> criar(@RequestBody @Valid AlunoCreateDTO dto) {
         AlunoDTO alunoDTO = alunoService.criar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(alunoDTO);

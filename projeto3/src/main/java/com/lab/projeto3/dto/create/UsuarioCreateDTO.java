@@ -24,7 +24,4 @@ public class UsuarioCreateDTO extends Usuario {
 
     @NotBlank(message = "A senha é obrigatória")
     private String senha;
-
-    @NotBlank(message = "O cargo é obrigatório")
-    private Role role;
 }

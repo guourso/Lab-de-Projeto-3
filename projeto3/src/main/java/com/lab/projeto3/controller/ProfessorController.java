@@ -27,9 +27,9 @@ public class ProfessorController {
 
     private final ProfessorService professorService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<ProfessorDTO> criar(@RequestBody @Valid ProfessorCreateDTO dto) {
-        Professor prof = professorService.criar(ProfessorMapper.toEntity(dto));
+        Professor prof = professorService.criar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ProfessorMapper.toDTO(prof));
     }
 

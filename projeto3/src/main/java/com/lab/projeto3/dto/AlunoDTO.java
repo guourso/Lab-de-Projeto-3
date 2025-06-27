@@ -12,5 +12,5 @@ public class AlunoDTO {
     private String rg;
     private String endereco;
     private String instituicaoNome;
-    private int saldoMoedas;
+    private Double saldoMoedas;
 }

@@ -22,6 +22,11 @@ public class TrocaVantagem {
     @Column(nullable = false)
     private String codigoCupom;
 
+    @ManyToOne
+    private EmpresaParceira empresa;
+
+    private Double valor;
+
     @Column(nullable = false)
     private LocalDateTime data = LocalDateTime.now();
 }

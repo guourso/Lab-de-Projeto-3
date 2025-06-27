@@ -22,9 +22,9 @@ public class EmpresaParceiraController {
 
     private final EmpresaParceiraService empresaService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<EmpresaParceiraDTO> criar(@RequestBody @Valid EmpresaParceiraCreateDTO dto) {
-        EmpresaParceira empresa = empresaService.criar(EmpresaMapper.toEntity(dto));
+        EmpresaParceira empresa = empresaService.criar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(EmpresaMapper.toDTO(empresa));
     }
 

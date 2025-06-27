@@ -7,13 +7,14 @@ import lombok.Data;
 @Data
 public class EmpresaParceiraCreateDTO {
 
-    @NotBlank
+    @NotBlank(message = "O nome é obrigatório")
     private String nome;
 
-    @NotBlank @Email
+    @NotBlank(message = "O email é obrigatório")
+    @Email(message = "Email inválido")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "A senha é obrigatória")
     private String senha;
 
     @NotBlank

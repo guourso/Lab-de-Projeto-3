@@ -10,8 +10,11 @@ public class VantagemCreateDTO {
     @NotBlank
     private String descricao;
 
+    @NotBlank
+    private String nome;
+    
     @NotNull
-    private Integer custoMoedas;
+    private Double custoMoedas;
 
     private String urlImagem;
 

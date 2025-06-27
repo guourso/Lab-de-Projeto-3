@@ -17,6 +17,7 @@ import com.lab.projeto3.dto.create.TrocaVantagemCreateDTO;
 import com.lab.projeto3.mapper.AlunoMapper;
 import com.lab.projeto3.mapper.TrocaMapper;
 import com.lab.projeto3.model.Aluno;
+import com.lab.projeto3.model.EmpresaParceira;
 import com.lab.projeto3.model.TrocaVantagem;
 import com.lab.projeto3.model.Vantagem;
 import com.lab.projeto3.service.AlunoService;
@@ -39,7 +40,8 @@ public class TrocaVantagemController {
     public ResponseEntity<TrocaVantagemDTO> trocar(@RequestBody @Valid TrocaVantagemCreateDTO dto) {
         Aluno aluno = AlunoMapper.toEntity(alunoService.buscarPorId(dto.getIdAluno()));
         Vantagem vantagem = vantagemService.buscarPorId(dto.getIdVantagem());
-
+        EmpresaParceira empresaParceira = vantagem.getEmpresa();
+        
         if (aluno.getSaldoMoedas() < vantagem.getCustoMoedas()) {
             throw new IllegalArgumentException("Aluno não possui moedas suficientes.");
         }
@@ -50,6 +52,8 @@ public class TrocaVantagemController {
         troca.setAluno(aluno);
         troca.setVantagem(vantagem);
         troca.setCodigoCupom(UUID.randomUUID().toString());
+        troca.setValor(vantagem.getCustoMoedas());
+        troca.setEmpresa(empresaParceira);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 TrocaMapper.toDTO(trocaService.registrarTroca(troca))

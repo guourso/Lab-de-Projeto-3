@@ -1,5 +1,8 @@
 package com.lab.projeto3.service;
 
+import com.lab.projeto3.dto.create.EmpresaParceiraCreateDTO;
+import com.lab.projeto3.enums.Role;
+import com.lab.projeto3.mapper.EmpresaMapper;
 import com.lab.projeto3.model.EmpresaParceira;
 import com.lab.projeto3.repository.EmpresaParceiraRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,7 +17,10 @@ public class EmpresaParceiraService {
 
     private final EmpresaParceiraRepository empresaRepository;
 
-    public EmpresaParceira criar(EmpresaParceira empresa) {
+    public EmpresaParceira criar(EmpresaParceiraCreateDTO empresaCreateDTO) {
+        EmpresaParceira empresa = EmpresaMapper.toEntity(empresaCreateDTO);
+        System.out.println("DADOS DO OBJETO RECEBIDO:" + empresa.getCnpj() + " " +  empresa.getEmail()+ " " + empresa.getNome());
+        empresa.setRole(Role.EMPRESA);
         return empresaRepository.save(empresa);
     }
 
