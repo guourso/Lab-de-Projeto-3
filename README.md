@@ -152,14 +152,6 @@ Como usuário do sistema (aluno, professor ou empresa), desejo acessar o sistema
 <table>
   <tr>
     <td align="center">
-      <a href="https://github.com/BryanAbreu21">
-        <img src="https://avatars.githubusercontent.com/u/127118299?v=4)" width="100px;" alt="Foto de Bryan"/><br>
-        <sub>
-          <b>Bryan Rosenberg de Abreu</b>
-        </sub>
-      </a>
-    </td>
-    <td align="center">
       <a href="https://github.com/guourso">
         <img src="https://avatars.githubusercontent.com/u/62347484?v=4" width="100px;" alt="Foto de Gustavo"/><br>
         <sub>
