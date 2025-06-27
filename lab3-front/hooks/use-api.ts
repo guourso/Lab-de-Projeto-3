@@ -1,7 +1,11 @@
 import { useMemo } from "react"
 import axios, { AxiosInstance } from "axios"
 
-export function useApi(): AxiosInstance {
+type UseApiOptions = {
+  withAuth?: boolean
+}
+
+export function useApi({ withAuth = true }: UseApiOptions = {}): AxiosInstance {
   const api = useMemo(() => {
     const instance = axios.create({
       baseURL: "https://lab-3-latest.onrender.com/api",
@@ -10,13 +14,15 @@ export function useApi(): AxiosInstance {
       },
     })
 
-    const token = localStorage.getItem("token") 
-    if (token) {
-      instance.defaults.headers.common["Authorization"] = `Bearer ${token}`
+    if (withAuth) {
+      const token = localStorage.getItem("token")
+      if (token) {
+        instance.defaults.headers.common["Authorization"] = `Bearer ${token}`
+      }
     }
 
     return instance
-  }, [])
+  }, [withAuth])
 
   return api
 }
