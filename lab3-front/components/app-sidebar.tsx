@@ -14,44 +14,73 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
-// This is sample data.
-const data = {
-  navMain: [
+const navByRole = {
+  ALUNO: [
     {
-      title: "Navegue aqui",
+      title: "Menu do Aluno",
       url: "#",
       items: [
-        {
-          title: "Home",
-          url: "/#",
-        },
-        {
-          title: "Perfil",
-          url: "/perfil",
-        },
-                {
-          title: "Vantagens",
-          url: "/vantagens",
-        },
+        { title: "Dashboard", url: "/aluno/dashboard" },
+        { title: "Minhas Moedas", url: "/aluno/moedas" },
+        { title: "Perfil", url: "/aluno/perfil" },
+      ],
+    },
+  ],
+  PROFESSOR: [
+    {
+      title: "Menu do Professor",
+      url: "#",
+      items: [
+        { title: "Dashboard", url: "/professor/dashboard" },
+        { title: "Gerenciar Alunos", url: "/professor/alunos" },
+        { title: "Perfil", url: "/professor/perfil" },
+      ],
+    },
+  ],
+  EMPRESA: [
+    {
+      title: "Menu da Empresa",
+      url: "#",
+      items: [
+        { title: "Dashboard", url: "/empresa/dashboard" },
+        { title: "Recompensas", url: "/empresa/recompensas" },
+      ],
+    },
+  ],
+  DEFAULT: [
+    {
+      title: "Navegação",
+      url: "#",
+      items: [
+        { title: "Home", url: "/" },
+        { title: "Perfil", url: "/perfil" },
       ],
     },
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+type UserRole = "ALUNO" | "PROFESSOR" | "EMPRESA" | string
+
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  role: UserRole
+}
+
+export function AppSidebar({ role, ...props }: AppSidebarProps) {
+  const navData = navByRole[role as keyof typeof navByRole] || navByRole.DEFAULT
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <VersionSwitcher
-        />
+        <VersionSwitcher />
       </SidebarHeader>
       <SidebarContent>
-        {data.navMain.map((item) => (
-          <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+        {navData.map((group) => (
+          <SidebarGroup key={group.title}>
+            <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {item.items.map((item) => (
+                {group.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
                       <a href={item.url}>{item.title}</a>
