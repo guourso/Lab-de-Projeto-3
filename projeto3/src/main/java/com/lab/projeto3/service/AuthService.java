@@ -23,33 +23,48 @@ public class AuthService {
     private String secret;
 
     private final UsuarioRepository usuarioRepo;
+    private final AlunoRepository alunoRepo;
     private final PasswordEncoder passwordEncoder;
 
     public LoginResponseDTO autenticar(LoginRequestDTO dto) {
         Optional<? extends Usuario> usuarioOptional = buscarUsuarioPorEmail(dto.getEmail());
 
-        Usuario usuario = usuarioOptional.orElseThrow(() ->
-                new EntityNotFoundException("Usuário não encontrado."));
+        Usuario usuario = usuarioOptional.orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado."));
 
         if (!passwordEncoder.matches(dto.getSenha(), usuario.getSenha())) {
             throw new IllegalArgumentException("Senha inválida.");
         }
 
         String token = gerarToken(usuario);
-        return new LoginResponseDTO(token, usuario.getRole());
+        Double saldoMoedas = null;
+
+        if (usuario instanceof Aluno) {
+            saldoMoedas = ((Aluno) usuario).getSaldoMoedas();
+        }
+
+        return new LoginResponseDTO(
+                token,
+                usuario.getRole(),
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getEmail(),
+                saldoMoedas);
     }
 
-    private Optional<Usuario> buscarUsuarioPorEmail(String email) {
-        Optional<Usuario> usuario = usuarioRepo.findByEmail(email);
-        return usuario;
+    private Optional<? extends Usuario> buscarUsuarioPorEmail(String email) {
+        Optional<Aluno> aluno = alunoRepo.findByEmail(email);
+        if (aluno.isPresent()) {
+            return aluno;
+        }
+        return usuarioRepo.findByEmail(email);
     }
 
     private String gerarToken(Usuario usuario) {
         return JWT.create()
                 .withClaim("role", usuario.getRole().toString())
+                .withClaim("id", usuario.getId())
                 .withSubject(usuario.getEmail())
-                .withIssuedAt(Instant.now())
-                .withExpiresAt(Instant.now().plusSeconds(60 * 60)) // 1 hora
+                .withExpiresAt(Instant.now().plusSeconds(86400)) // 24 horas
                 .sign(Algorithm.HMAC256(secret));
     }
 

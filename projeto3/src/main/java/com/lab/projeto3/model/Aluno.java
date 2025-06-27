@@ -2,25 +2,16 @@ package com.lab.projeto3.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"transacoesRecebidas","trocas"})
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
@@ -38,18 +29,19 @@ public class Aluno extends Usuario {
     @Column(nullable = false)
     private String curso;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "instituicao_id", nullable = false)
+    @JsonBackReference(value = "instituicao-alunos")
     private Instituicao instituicao;
 
     @Builder.Default
     private Double saldoMoedas = 0.0;
 
-    @OneToMany(mappedBy = "aluno")
+    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<TransacaoMoeda> transacoesRecebidas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "aluno")
+    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<TrocaVantagem> trocas = new ArrayList<>();
 }

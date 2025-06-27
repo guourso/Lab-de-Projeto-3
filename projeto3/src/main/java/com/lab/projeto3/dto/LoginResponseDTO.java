@@ -10,4 +10,8 @@ import lombok.Getter;
 public class LoginResponseDTO {
     private String token;
     private Role role;
+    private Long id;
+    private String nome;
+    private String email;
+    private Double saldoMoedas;
 }

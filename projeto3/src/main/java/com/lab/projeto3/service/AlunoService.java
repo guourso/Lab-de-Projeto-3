@@ -8,6 +8,7 @@ import com.lab.projeto3.model.Aluno;
 import com.lab.projeto3.repository.AlunoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +19,14 @@ public class AlunoService {
 
     private final AlunoRepository alunoRepository;
     private final InstituicaoService instituicaoService;
+    private final PasswordEncoder passwordEncoder;
 
     public AlunoDTO criar(AlunoCreateDTO alunoCreateDto) {
         Aluno aluno = AlunoMapper.toEntity(alunoCreateDto);
         aluno.setRole(Role.ALUNO);
         aluno.setInstituicao(instituicaoService.buscarPorId(alunoCreateDto.getIdInstituicao()));
+        // Criptografar a senha antes de salvar
+        aluno.setSenha(passwordEncoder.encode(aluno.getSenha()));
         aluno = alunoRepository.save(aluno);
         return AlunoMapper.toDTO(aluno);
     }

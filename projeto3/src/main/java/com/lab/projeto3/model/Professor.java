@@ -3,23 +3,15 @@ package com.lab.projeto3.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = "transacoesEnviadas")
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
@@ -31,11 +23,17 @@ public class Professor extends Usuario {
     @Column(nullable = false)
     private String departamento;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "instituicao_id", nullable = false)
+    @JsonBackReference(value = "instituicao-professores")
     private Instituicao instituicao;
 
+    @Builder.Default
     private int saldoMoedas = 0;
 
-    @OneToMany(mappedBy = "professor")
+    @OneToMany(mappedBy = "professor",
+               cascade = CascadeType.ALL,
+               orphanRemoval = true)
+    @Builder.Default
     private List<TransacaoMoeda> transacoesEnviadas = new ArrayList<>();
 }

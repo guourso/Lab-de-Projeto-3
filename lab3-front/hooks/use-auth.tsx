@@ -32,11 +32,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (!response.ok) {
-        throw new Error("Falha na autenticação");
+        const error = await response.json();
+        throw new Error(error.message || "Falha na autenticação");
       }
 
       const data = await response.json();
-      setUser(data);
+      setUser({
+        id: data.id,
+        nome: data.nome,
+        email: data.email,
+        role: data.role,
+        saldoMoedas: data.saldoMoedas,
+      });
     } catch (error) {
       console.error("Erro de login:", error);
       throw error;
