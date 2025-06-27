@@ -7,6 +7,8 @@ import com.lab.projeto3.model.Professor;
 import com.lab.projeto3.repository.ProfessorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +18,15 @@ import java.util.List;
 public class ProfessorService {
 
     private final ProfessorRepository professorRepository;
+    private final InstituicaoService instituicaoService;
+    private final PasswordEncoder passwordEncoder;
 
     public Professor criar(ProfessorCreateDTO professorCreateDTO) {
-        //get institui,ão e get departamento
         Professor professorEntity = ProfessorMapper.toEntity(professorCreateDTO);
         professorEntity.setRole(Role.PROFESSOR);
-        professorEntity.setSenha(professorCreateDTO.getSenha());
+        professorEntity.setSenha(passwordEncoder.encode(professorEntity.getSenha()));
+        professorEntity.setDepartamento(professorCreateDTO.getDepartamento());
+        professorEntity.setInstituicao(instituicaoService.buscarPorId(professorCreateDTO.getIdInstituicao()));
         return professorRepository.save(professorEntity);
     }
 

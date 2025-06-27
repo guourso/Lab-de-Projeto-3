@@ -25,7 +25,6 @@ public class AlunoService {
         Aluno aluno = AlunoMapper.toEntity(alunoCreateDto);
         aluno.setRole(Role.ALUNO);
         aluno.setInstituicao(instituicaoService.buscarPorId(alunoCreateDto.getIdInstituicao()));
-        // Criptografar a senha antes de salvar
         aluno.setSenha(passwordEncoder.encode(aluno.getSenha()));
         aluno = alunoRepository.save(aluno);
         return AlunoMapper.toDTO(aluno);
