@@ -9,7 +9,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class Projeto3Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Projeto3Application.class, args);
+		SpringApplication application = new SpringApplication(Projeto3Application.class);
+		application.setAllowBeanDefinitionOverriding(true);
+		application.run(args);
 	}
 
 }

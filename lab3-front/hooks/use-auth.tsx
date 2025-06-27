@@ -20,7 +20,6 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-
   const login = useCallback(async (email: string, senha: string) => {
     try {
       const response = await fetch("http://localhost:8080/api/auth/login", {
@@ -37,6 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       const data = await response.json();
+      setToken(data.token);
       setUser({
         id: data.id,
         nome: data.nome,
@@ -50,9 +50,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const logout = useCallback(() => {
+  const [token, setToken] = React.useState<string | null>(null);
+
+  const logout = useCallback(async () => {
+    if (token) {
+      try {
+        await fetch("http://localhost:8080/api/auth/logout", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (error) {
+        console.error("Erro ao fazer logout:", error);
+      }
+    }
     setUser(null);
-  }, []);
+    setToken(null);
+  }, [token]);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

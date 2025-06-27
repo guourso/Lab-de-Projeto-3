@@ -1,4 +1,16 @@
 services:
+  api:
+    build: .
+    container_name: sistema_moedas
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+    networks:
+      - sysvantagens-network
+
   mailhog:
     image: mailhog/mailhog
     container_name: 'sistema_moedas_mailhog'

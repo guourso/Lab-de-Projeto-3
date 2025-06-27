@@ -25,6 +25,7 @@ public class AuthService {
     private final UsuarioRepository usuarioRepo;
     private final AlunoRepository alunoRepo;
     private final PasswordEncoder passwordEncoder;
+    private final TokenBlacklistService tokenBlacklistService;
 
     public LoginResponseDTO autenticar(LoginRequestDTO dto) {
         Optional<? extends Usuario> usuarioOptional = buscarUsuarioPorEmail(dto.getEmail());
@@ -49,6 +50,13 @@ public class AuthService {
                 usuario.getNome(),
                 usuario.getEmail(),
                 saldoMoedas);
+    }
+
+    public void logout(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+            tokenBlacklistService.blacklistToken(token);
+        }
     }
 
     private Optional<? extends Usuario> buscarUsuarioPorEmail(String email) {
